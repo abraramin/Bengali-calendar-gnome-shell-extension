@@ -128,7 +128,7 @@ function bnBnToday()
   bnDateArray[1] = translate(bnDateMonth[0]);
   bnDateArray[2] = bnMonths[bnDateMonth[1]];
 
-  console.log(bnDateArray);
+  return bnDateArray[3] +" "+ bnDateArray[1]+" "+bnDateArray[2]+", "+bnDateArray[0];
 }
 
-bnBnToday();
+

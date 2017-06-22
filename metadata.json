@@ -1,8 +1,1 @@
-{
-	"name" : "বঙ্গাব্দ|Bengali Calendar"
-	"description" : "Add Bengali calendar date in Bengali fonts to the top panel."
-	"uuid" : "bn_cal_gnome@perth155.github.com"
-	"url" : "https://github.com/Perth155/Bengali-calendar-gnome-shell-extension"
-	"shell-version" : ["3.18", "3.20", "3.22", "3.22.3"]
-	"version" : "0.1"
-}
+{"name": "s: open the popup + write \u201clg", "description": "Test", "uuid": "aaa@example.com", "shell-version": ["3.24.2"]}
