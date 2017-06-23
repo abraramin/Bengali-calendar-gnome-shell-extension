@@ -1,54 +1,67 @@
 const St = imports.gi.St;
 const Main = imports.ui.main;
-const Tweener = imports.ui.tweener;
 const Me = imports.misc.extensionUtils.getCurrentExtension();
 const bnDate = Me.imports.date;
+const Mainloop = imports.mainloop;
+const PanelMenu = imports.ui.panelMenu;
+const Lang = imports.lang;
+const Clutter = imports.gi.Clutter;
 
-let text, button;
-var refreshInterval, currDay;
+
+let bnCal;
+
+const BengaliCalendar = new Lang.Class({
+	Name: "BengaliCalendar", Extends: PanelMenu.Button,
+
+	_init: function(){
+		this.parent(0.0, "BengaliCalendar", false);
+		this.buttonText = new St.Label({
+			text: bnDate.bnBnToday(),
+			y_align: Clutter.ActorAlign.CENTER
+		});
+		this.actor.add_actor(this.buttonText);
+		this._refresh();
+	},
+
+	_refresh: function(){
+		this._refreshUI();
+		this._removeTimeout();
+		this._timeout = Mainloop.timeout_add_seconds(1, Lang.bind(this, this._refresh));
+		return true;
+	},
 
 
-function updateDisplay(){
-	text = new St.Label({text: bnDate.bnBnToday()});
-    button.set_child(text);
-}
+	_refreshUI: function(){
+		let txt = bnDate.bnBnToday();
+		this.buttonText.set_text(txt);
+	},
 
-function refreshLoop(){
-	var currDate = new Date();
-	currDay = currDate.getDay();
-
-	refreshInterval = setInterval(function(){
-		var updatedDate = new Date();
-		var updatedDay = updatedDate.getDay();
-		if(parseInt(currDay) != parseInt(updatedDay)){
-			updateDisplay();
-    		currDay = updatedDay;
+	_removeTimeout: function(){
+		if(this._timeout){
+			Mainloop.source_remove(this._timeout);
+			this._timeout = null;
 		}
-	}, 1000);
-}
+	},
 
+	stop: function(){
+		if(this._timeout)
+			Mainloop.source_remove(this._timeout);
+		this._timeout = undefined;
 
-function stopTimer(){
-	clearInterval(refreshInterval);
-}
+		this.menu.removeAll();
+	}
+});
+
 
 function init() {
-    button = new St.Bin({ style_class: 'panel-button',
-                          reactive: true,
-                          can_focus: true,
-                          x_fill: true,
-                          y_fill: false,
-                          track_hover: true });
-
-    updateDisplay();
 }
 
 function enable() {
-    Main.panel._rightBox.insert_child_at_index(button, 0);
-    refreshLoop();
+    bnCal = new BengaliCalendar;
+    Main.panel.addToStatusArea("bengaliCalendar", bnCal);
 }
 
 function disable() {
-	stopTimer();
-    Main.panel._rightBox.remove_child(button);
+	bnCal.stop();
+ 	bnCal.destroy();
 }
