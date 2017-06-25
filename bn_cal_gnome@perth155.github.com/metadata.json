@@ -1,0 +1,8 @@
+{
+	"name" : "বঙ্গাব্দ|Bengali Calendar",
+	"description" : "Adds (revised) Bengali calendar date in Bengali fonts to the top panel. Currently official Bangladesh calendar dates only.",
+	"uuid" : "bn_cal_gnome@perth155.github.com",
+	"url" : "https://github.com/Perth155/Bengali-calendar-gnome-shell-extension",
+	"shell-version" : ["3.18", "3.20", "3.22", "3.24"],
+	"version" : "0.1"
+}
