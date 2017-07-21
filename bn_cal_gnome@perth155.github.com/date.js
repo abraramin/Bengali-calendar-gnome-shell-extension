@@ -1,5 +1,28 @@
 "use strict";
 
+var wbDays = 
+{
+    "start_of_time" : "April 15, 2015",
+    "start_year" : 1422,
+    "1422" : [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+    "1423" : [31, 32, 31, 31, 31, 31, 30, 29, 30, 29, 30, 31],
+    "1424" : [30, 32, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+    "1425" : [31, 31, 31, 32, 31, 30, 30, 30, 29, 30, 30, 30],
+    "1426" : [31, 31, 32, 31, 31, 31, 30, 29, 30, 29, 30, 30],
+    "1427" : [31, 32, 31, 31, 31, 31, 30, 29, 30, 29, 30, 31],
+    "1428" : [],
+    "1429" : [],
+    "1430" : [],
+    "1431" : [],
+    "1432" : [],
+    "1433" : [],
+    "1434" : [],
+    "daysInYear" : [365, 366, 365, 365, 365, 366],
+    "end_of_time" : "April 15, 2021"
+};
+
+var bnMonths = ["বৈশাখ","জ্যৈষ্ঠ","আষাঢ়","শ্রাবণ", "ভাদ্র", "আশ্বিন", "কার্তিক", "অগ্রহায়ণ","পৌষ", "মাঘ", "ফাল্গুন", "চৈত্র"];
+
 function getBnDayOfWeek(dayOfWeekIndex)
 {
   var bnDaysOfWeek = ["রবি", "সোম", "মঙ্গল", "বুধ", "বৃহস্পতি", "শুক্র", "শনি"];
@@ -54,7 +77,6 @@ function bnEnToday()
   var bnYear = translate(enDate[2]);
   var bnDayOfWeek = getBnDayOfWeek(enDate[3]);
   var bnDate = (bnDayOfWeek+" "+bnDay+"/"+bnMonth+"/"+bnYear);
-  console.log(bnDate);
   return bnDate;
 }
 
@@ -107,9 +129,44 @@ function getBnDateMonth(firstDayOfYear)
   return dayMonth;
 }
 
-function bnBnToday()
+
+function wbBnToday()
 {
-  var bnMonths = ["বৈশাখ","জ্যৈষ্ঠ","আষাঢ়","শ্রাবণ", "ভাদ্র", "আশ্বিন", "কার্তিক", "অগ্রহায়ণ","পৌষ", "মাঘ", "ফাল্গুন", "চৈত্র"];
+  var bnDateArray = [0,0,0,0];
+  bnDateArray[3] = getBnDayOfWeek(getDateArray()[3]); //Day
+  var enDate = getDateArray();
+  var msToDay = 24*60*60*1000;
+  var beginningOfTime = new Date(wbDays["start_of_time"]);
+  var now = new Date()
+  if(new Date(wbDays["end_of_time"]) < now)
+    return "No more dates available.";
+  var diffDays = Math.round(Math.abs((beginningOfTime.getTime() - now.getTime())/msToDay));
+  var yearInc = 0;
+  for(var i = 0; i<wbDays["daysInYear"].length; i++)
+  {
+    if(diffDays-wbDays["daysInYear"][i]<0)
+      break;
+    diffDays-=wbDays["daysInYear"][i];
+    yearInc+=i;
+  }
+  var enBnYear = wbDays["start_year"]+yearInc+1; //year
+  bnDateArray[0] =  translate(enBnYear);
+  var monthInc = 0;
+  for(var y = 0; y<wbDays[String(enBnYear)].length; y++)
+  {
+    if(diffDays-wbDays[String(enBnYear)][y]<0)
+      break;
+    diffDays-=wbDays[String(enBnYear)][y];
+    monthInc+=y;
+  }
+  bnDateArray[1] = bnMonths[(monthInc)];
+  bnDateArray[2] = translate(diffDays);
+  return bnDateArray[3] +" "+ bnDateArray[2]+" "+bnDateArray[1]+", "+bnDateArray[0];
+}
+
+
+function bdBnToday()
+{
   var enDate = getDateArray();
   var bnCalendarDayOne = new Date("April 14, 0593"); //months are indexed from 0 to 11. Actual date 14/04/593 AD.
   var bnDateArray = [0,0,0,0];
@@ -127,8 +184,6 @@ function bnBnToday()
   var bnDateMonth = getBnDateMonth(startOfYearDate);
   bnDateArray[1] = translate(bnDateMonth[0]);
   bnDateArray[2] = bnMonths[bnDateMonth[1]];
-
   return bnDateArray[3] +" "+ bnDateArray[1]+" "+bnDateArray[2]+", "+bnDateArray[0];
 }
-
 

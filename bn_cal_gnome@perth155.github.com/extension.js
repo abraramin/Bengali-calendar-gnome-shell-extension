@@ -4,22 +4,30 @@ const Me = imports.misc.extensionUtils.getCurrentExtension();
 const bnDate = Me.imports.date;
 const Mainloop = imports.mainloop;
 const PanelMenu = imports.ui.panelMenu;
+const PopupMenu = imports.ui.popupMenu;
 const Lang = imports.lang;
 const Clutter = imports.gi.Clutter;
-
+const BD_MODE = 1;
+const WB_MODE = 2;
 
 let bnCal;
+var mode = BD_MODE;
 
 const BengaliCalendar = new Lang.Class({
 	Name: "BengaliCalendar", Extends: PanelMenu.Button,
 
-	_init: function(){
+	_init: function()
+	{
 		this.parent(0.0, "BengaliCalendar", false);
 		this.buttonText = new St.Label({
-			text: bnDate.bnBnToday(),
+			text: bnDate.bdBnToday(),
 			y_align: Clutter.ActorAlign.CENTER
 		});
 		this.actor.add_actor(this.buttonText);
+		// let item = new PopupMenu.PopupMenuItem("Bangladesh (বাংলাদেশ)");
+  //   	this.menu.addMenuItem(item);
+  //   	let itemTwo = new PopupMenu.PopupMenuItem("West Bengal (পশ্চিমবঙ্গ)");
+  //   	this.menu.addMenuItem(itemTwo);
 		this._refresh();
 	},
 
@@ -32,7 +40,11 @@ const BengaliCalendar = new Lang.Class({
 
 
 	_refreshUI: function(){
-		let txt = bnDate.bnBnToday();
+		let txt;
+		if(mode == BD_MODE)
+			txt = bnDate.bdBnToday();
+		else
+			txt = bnDate.wbBnToday();
 		this.buttonText.set_text(txt);
 	},
 
@@ -50,6 +62,7 @@ const BengaliCalendar = new Lang.Class({
 
 		this.menu.removeAll();
 	}
+
 });
 
 
@@ -65,3 +78,7 @@ function disable() {
 	bnCal.stop();
  	bnCal.destroy();
 }
+
+
+
+
