@@ -11,7 +11,7 @@ https://extensions.gnome.org/extension/1246/bengali-calendar/
 Alternatively, 
 - Copy the directory ```bn_cal_gnome@perth155.github.com``` to ```~/.local/share/gnome-shell/extensions```
 - Restart Gnome Shell- Press ```alt``` and  ```F2```, then enter ```r``` into the prompt.
-- Turn on the extension from ```Gnome Tweak Tool```.
+- Enable the extension from ```Gnome Tweak Tool```.
 
 ## Todo
 - [X] Add switchable non-revised Bengali calendar as used in West Bengal (Partially Complete).
